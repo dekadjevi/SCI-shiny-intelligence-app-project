@@ -1,13 +1,12 @@
-# Competitive Intelligence Shiny App
+# Competitive Intelligence Shiny (dashboard) App
 
 ## Objective
-This project develops a Shiny application to support strategic decision-making
-through competitive intelligence analysis.
+This project develops a Shiny application (dashboard) ....
 
 ## Features
 - Interactive dashboards on competitors and market trends
-- SWOT and risk analysis
-- Data-driven insights for decision making
+- 
+- 
 
 ## Tech Stack
 - R
