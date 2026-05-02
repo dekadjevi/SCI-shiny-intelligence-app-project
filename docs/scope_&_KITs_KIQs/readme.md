@@ -1,1 +1,1 @@
-## her we put preliminary doc or word done so fare 
+## her we put preliminary doc or work done so fare 
