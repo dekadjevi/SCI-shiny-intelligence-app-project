@@ -4,6 +4,8 @@
 
 KIQ_1_1_scopus_export.csv 
 
+° scopus
+
 qwuery => 
 
 ("mobile commerce" OR "online ordering" OR "e-commerce") AND
