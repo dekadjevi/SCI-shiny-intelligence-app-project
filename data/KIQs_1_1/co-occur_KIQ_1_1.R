@@ -13,18 +13,15 @@ library(ggraph)
 library(tidygraph)
 library(ggplot2)
 
-# ============================================
 # LOAD DATA
-# ============================================
+
 
 data <- read_csv(
   "KIQ_1_1_scopus_export.csv",
   show_col_types = FALSE
 )
 
-# ============================================
 # MERGE KEYWORD COLUMNS
-# ============================================
 
 all_keywords <- data.frame(
   id = 1:nrow(data),
@@ -44,9 +41,7 @@ keywords <- all_keywords %>%
   ) %>%
   filter(keywords != "")
 
-# ============================================
 # MERGE SYNONYMS
-# ============================================
 
 keywords <- keywords %>%
   mutate(
@@ -59,9 +54,8 @@ keywords <- keywords %>%
     )
   )
 
-# ============================================
 # REMOVE VERY GENERIC TERMS
-# ============================================
+
 
 remove_terms <- c(
   "e- commerces",
@@ -74,9 +68,8 @@ remove_terms <- c(
 keywords <- keywords %>%
   filter(!keywords %in% remove_terms)
 
-# ============================================
+
 # CO-OCCURRENCE MATRIX
-# ============================================
 
 cooc <- keywords %>%
   pairwise_count(
@@ -88,16 +81,13 @@ cooc <- keywords %>%
 # View strongest associations
 head(cooc, 20)
 
-# ============================================
+
 # FILTER STRONG LINKS
-# ============================================
 
 cooc_filtered <- cooc %>%
   filter(n >= 4)
 
-# ============================================
 # CREATE NETWORK GRAPH
-# ============================================
 
 graph <- graph_from_data_frame(cooc_filtered)
 
