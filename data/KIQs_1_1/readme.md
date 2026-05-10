@@ -1,5 +1,7 @@
 # data exported from scopus or from patents (espacenet) 
 
+-> " product search and filtering functions "
+
 KIQ_1_1_scopus_export.csv 
 
 qwuery => 
