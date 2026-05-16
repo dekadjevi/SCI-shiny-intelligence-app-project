@@ -13,9 +13,9 @@ library(ggplot2)
 library(wordcloud)
 library(RColorBrewer)
 
-setwd("/Users/kodjoflaurent/SCI-shiny-intelligence-app/data/KIQs_1_1")
+setwd("/Users/kodjoflaurent/SCI-shiny-intelligence-app/data/KIQs_1_1/raw")
 # Load data
-df <- read_csv("scopus_export_new.csv", show_col_types = FALSE)
+df <- read_csv("new_scopus_latest_1.csv", show_col_types = FALSE)
 
 # Merge Author Keywords and Index Keywords
 keywords_df <- df %>%
@@ -40,16 +40,20 @@ keywords_tokens <- keywords_df %>%
 
 # Remove scope/background terms
 remove_terms <- c(
-  "e- commerces",
-  "e-commerce",
-  "electronic commerce",
-  "commerce",
-  "e commerce",
-  "mobile commerce",
-  "online commerce"
+  "e- commerces", "e-commerce", "electronic commerce",
+  "commerce", "e commerce", "mobile commerce", "online commerce",
+  "information systems", "information use", "learning systems",
+  "decision making", "sales"
 )
 
 keywords_clean <- keywords_tokens %>%
+  mutate(keyword = str_to_lower(str_trim(keyword))) %>%
+  mutate(keyword = case_when(
+    keyword %in% c("personalizations") ~ "personalization",
+    keyword %in% c("recommender system", "recommendation system", "recommender systems") ~ "recommender systems",
+    keyword %in% c("users' experiences", "user experiences") ~ "user experience",
+    TRUE ~ keyword
+  )) %>%
   filter(!keyword %in% remove_terms)
 
 # Occurrence analysis
