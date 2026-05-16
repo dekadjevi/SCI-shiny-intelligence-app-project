@@ -2,7 +2,7 @@
 
 # Install if needed
 install.packages(c("widyr", "igraph", "ggraph", "tidygraph"))
-
+setwd("/Users/kodjoflaurent/SCI-shiny-intelligence-app/data/KIQs_1_1")
 library(readr)
 library(dplyr)
 library(tidyr)
@@ -17,7 +17,7 @@ library(ggplot2)
 
 
 data <- read_csv(
-  "KIQ_1_1_scopus_export.csv",
+  "scopus_export_new.csv",
   show_col_types = FALSE
 )
 

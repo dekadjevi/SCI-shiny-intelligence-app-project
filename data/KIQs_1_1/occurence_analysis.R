@@ -13,8 +13,9 @@ library(ggplot2)
 library(wordcloud)
 library(RColorBrewer)
 
+setwd("/Users/kodjoflaurent/SCI-shiny-intelligence-app/data/KIQs_1_1")
 # Load data
-df <- read_csv("KIQ_1_1_scopus_export.csv", show_col_types = FALSE)
+df <- read_csv("scopus_export_new.csv", show_col_types = FALSE)
 
 # Merge Author Keywords and Index Keywords
 keywords_df <- df %>%
@@ -39,7 +40,7 @@ keywords_tokens <- keywords_df %>%
 
 # Remove scope/background terms
 remove_terms <- c(
-  "e-commerces",
+  "e- commerces",
   "e-commerce",
   "electronic commerce",
   "commerce",
