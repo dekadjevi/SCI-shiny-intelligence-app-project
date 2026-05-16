@@ -15,11 +15,10 @@ This project develops a Shiny application (dashboard) ....
 
 ## Project Structure
 - app/: Shiny application
-- scripts/: data pipeline and analysis
+- doc/ pdf of the scope statement and KIT WITH its corresponding KIQS
 - intelligence/: strategic insights
-- data/: datasets
+- data/raw: datasets
+- data/script :R.scripts
+- data/.... all utilities for each KIQ
 
 ## How to Run
-```r
-setwd("app")
-runApp()
