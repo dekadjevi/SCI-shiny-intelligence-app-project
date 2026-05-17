@@ -2,7 +2,6 @@
 
 # Install if needed
 install.packages(c("widyr", "igraph", "ggraph", "tidygraph"))
-setwd("/Users/kodjoflaurent/SCI-shiny-intelligence-app/data/KIQs_1_1")
 library(readr)
 library(dplyr)
 library(tidyr)
@@ -15,9 +14,9 @@ library(ggplot2)
 
 # LOAD DATA
 
-
+setwd("/Users/kodjoflaurent/SCI-shiny-intelligence-app/data/KIQs_1_1/raw")
 data <- read_csv(
-  "scopus_export_new.csv",
+  "new.csv",
   show_col_types = FALSE
 )
 
@@ -62,7 +61,9 @@ remove_terms <- c(
   "e-commerce",
   "electronic commerce",
   "commerce",
-  "mobile commerce"
+  "mobile commerce",
+  "commerce platforms",
+  "na"
 )
 
 keywords <- keywords %>%
@@ -85,7 +86,7 @@ head(cooc, 20)
 # FILTER STRONG LINKS
 
 cooc_filtered <- cooc %>%
-  filter(n >= 4)
+  filter(n >= 3)
 
 # CREATE NETWORK GRAPH
 
