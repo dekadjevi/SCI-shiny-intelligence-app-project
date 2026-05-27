@@ -1,22 +1,22 @@
 # =============================================================
-# KIQ 1.3 — Wordcloud script
+# KIQ 1.3 — Wordcloud script (ggwordcloud version)
 # Input : cleaned keyword file
 # Output: wordcloud (PNG) in outputs/
 # =============================================================
 install.packages(c(
-  "readr", "dplyr", "wordcloud", "RColorBrewer"
+  "readr", "dplyr", "tidyr", "stringr","ggwordcloud",
+  "tidytext", "ggplot2", "wordcloud", "RColorBrewer"
 ))
 
 library(readr)
 library(dplyr)
-library(wordcloud)
-library(RColorBrewer)
+library(ggplot2)
+library(ggwordcloud)
 
 # ---- Paths ----
 processed_path <- "C:/Users/flaurent/Desktop/SCI-shiny-intelligence-app-project/data/KIQs_3/processed/KIQ_1_3_cleaned.csv"
 plot_path      <- "C:/Users/flaurent/Desktop/SCI-shiny-intelligence-app-project/data/KIQs_3/outputs/Rwordcloud_KIQ1_3.png"
 
-# Make sure the outputs directory exists
 dir.create(dirname(plot_path), recursive = TRUE, showWarnings = FALSE)
 
 # ---- Load cleaned data ----
@@ -25,44 +25,38 @@ keywords_clean <- read_csv(processed_path, show_col_types = FALSE)
 # ---- Build frequency table ----
 occurrence_table <- keywords_clean %>%
   count(keyword, sort = TRUE) %>%
-  filter(n >= 5)   # drop very rare terms to keep the cloud readable
+  filter(n >= 10) %>%
+  slice_max(n, n = 80)
 
-# ---- Reproducibility (wordcloud layout is randomized) ----
 set.seed(42)
 
-# ---- Save wordcloud as PNG ----
-png(
+p <- ggplot(occurrence_table,
+            aes(label = keyword, size = n, color = n)) +
+  geom_text_wordcloud(
+    rm_outside = FALSE,        # nothing gets dropped silently
+    eccentricity = 1,          # roundish cloud, not stretched
+    shape = "circle"
+  ) +
+  scale_size_area(max_size = 18) +
+  scale_color_viridis_c(option = "mako", direction = -1)+
+  labs(
+    title    = "KIQ 1.3 — Keyword Wordcloud",
+    subtitle = "Customer retention, loyalty and convenience signals"
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(
+    plot.title    = element_text(face = "bold", size = 14),
+    plot.subtitle = element_text(size = 11),
+    plot.margin   = margin(10, 10, 10, 10)
+  )
+
+ggsave(
   filename = plot_path,
-  width    = 2400,
-  height   = 1400,
-  res      = 200,
+  plot     = p,
+  width    = 12,
+  height   = 7,
+  dpi      = 200,
   bg       = "white"
 )
 
-# Bigger margins help; the default par() leaves almost none for wordcloud
-par(mar = c(1, 1, 3, 1))
-
-wordcloud(
-  words        = occurrence_table$keyword,
-  freq         = occurrence_table$n,
-  min.freq     = 5,
-  max.words    = 80,                 # fewer words = more room for big ones
-  random.order = FALSE,
-  rot.per      = 0.0,                # no rotation — long strings stay horizontal
-  scale        = c(2.8, 0.5),        # cap the largest size
-  colors       = brewer.pal(8, "Dark2")
-)
-
-title(
-  main     = "KIQ 1.3 — Keyword Wordcloud",
-  sub      = "Customer retention, loyalty and convenience signals",
-  cex.main = 1.2,
-  cex.sub  = 0.9
-)
-wordcloud
-
-dev.off()
-
-
 message("Wordcloud saved to: ", plot_path)
-
