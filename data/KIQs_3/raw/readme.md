@@ -1,6 +1,6 @@
 # raw data for this KIQ 
 
-# this is behavioral KIQ and here we may prefere scientific literature the original way should be scraping METRO's app review or customer recession on METRO's app but since web scarping is not covered by the course we continue in our logic to use proxy , and here for scientific litterature SCOPUS is the MAIN DATA SOURCE HERE.
+### this is behavioral KIQ and here we may prefere scientific literature the original way should be scraping METRO's app review or customer recession on METRO's app but since web scarping is not covered by the course we continue in our logic to use proxy , and here for scientific litterature SCOPUS is the MAIN DATA SOURCE HERE.
 
 # QUERY ON SCOPUS :
 (
