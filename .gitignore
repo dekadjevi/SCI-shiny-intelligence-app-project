@@ -6,3 +6,4 @@ Thumbs.db
 *.csv
 *.xlsx
 *.RDS
+.DS_Store
