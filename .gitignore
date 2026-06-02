@@ -3,8 +3,14 @@
 .Rproj.user
 .DS_Store
 Thumbs.db
+
+# Ignore data files by default…
 *.csv
 *.xlsx
 *.RDS
-.DS_Store
-.DS_Store
+
+# …but keep anything inside data/ (reproducibility)
+!data/**/*.csv
+!data/**/*.xlsx
+!data/**/*.RDS
+
