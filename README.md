@@ -18,10 +18,6 @@ This project develops a Shiny application (dashboard)
 
 ## How to Run
 
-install.packages(c("shiny","ggplot2","dplyr","tidyr","readr","stringr","base64enc","plotly","DT"))
-
-
-setwd("path/to/SCI-shiny-intelligence-app-project")
-
-
-shiny::runApp("metro_shiny")
+- install.packages(c("shiny","ggplot2","dplyr","tidyr","readr","stringr","base64enc","plotly","DT"))
+- setwd("path/to/SCI-shiny-intelligence-app-project")
+- shiny::runApp("metro_shiny")
