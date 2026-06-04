@@ -1,12 +1,7 @@
 # Competitive Intelligence Shiny (dashboard) App
 
 ## Objective
-This project develops a Shiny application (dashboard) ....
-
-## Features
-- Interactive dashboards on competitors and market trends
-- 
-- 
+This project develops a Shiny application (dashboard)
 
 ## Tech Stack
 - R
@@ -14,7 +9,7 @@ This project develops a Shiny application (dashboard) ....
 - tidyverse
 
 ## Project Structure
-- app/: Shiny application
+- metro_shiny/: Shiny application
 - doc/ pdf of the scope statement and KIT WITH its corresponding KIQS
 - intelligence/: strategic insights
 - data/raw: datasets
@@ -25,5 +20,8 @@ This project develops a Shiny application (dashboard) ....
 
 install.packages(c("shiny","ggplot2","dplyr","tidyr","readr","stringr","base64enc","plotly","DT"))
 
+
 setwd("path/to/SCI-shiny-intelligence-app-project")
+
+
 shiny::runApp("metro_shiny")
