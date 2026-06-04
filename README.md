@@ -22,3 +22,8 @@ This project develops a Shiny application (dashboard) ....
 - data/.... all utilities for each KIQ
 
 ## How to Run
+
+install.packages(c("shiny","ggplot2","dplyr","tidyr","readr","stringr","base64enc","plotly","DT"))
+
+setwd("path/to/SCI-shiny-intelligence-app-project")
+shiny::runApp("metro_shiny")
