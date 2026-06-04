@@ -207,6 +207,7 @@ server <- function(input, output, session) {
   })
   observeEvent(input$k2step1, kit2_step("step1"))
   observeEvent(input$k2step2, kit2_step("step2"))
+  observeEvent(input$k2step3, kit2_step("step3"))
   observeEvent(input$k2chart1, kit2_chart(1))
   observeEvent(input$k2chart2, kit2_chart(2))
   observeEvent(input$k2chart3, kit2_chart(3))
@@ -266,7 +267,9 @@ server <- function(input, output, session) {
           tags$button(class = paste("step-btn", if (step=="step1") "active" else ""),
             onclick = "Shiny.setInputValue('k2step1', Math.random())", KIT2_KIQ23$step1$label),
           tags$button(class = paste("step-btn", if (step=="step2") "active" else ""),
-            onclick = "Shiny.setInputValue('k2step2', Math.random())", KIT2_KIQ23$step2$label)
+            onclick = "Shiny.setInputValue('k2step2', Math.random())", KIT2_KIQ23$step2$label),
+          tags$button(class = paste("step-btn", if (step=="step3") "active" else ""),
+            onclick = "Shiny.setInputValue('k2step3', Math.random())", KIT2_KIQ23$step3$label)
         ),
         div(class = "step-blurb", d$blurb),
         div(class = grid_cls, cells),

@@ -249,7 +249,7 @@ ui <- navbarPage(
         tags$tr(tags$td(class = "w-label", "How"),
                 tags$td(class = "w-answer", "Digital ordering capabilities act as retention and convenience drivers; competitor evolution and emerging technologies shape what is competitively necessary over a 3–5 year horizon.")),
         tags$tr(tags$td(class = "w-label", "How much"),
-                tags$td(class = "w-answer", "Bounded by course resources: open-source data (SCOPUS, Espacenet) as main data source in a proxy approach, web scarping only if neccessary especially in evaluating user perception on product set . "))
+                tags$td(class = "w-answer", "Bounded by course resources: open-source data (SCOPUS, Espacenet), no paid data, no web scraping, R-based analysis only."))
       ),
 
       sec("Negative analysis — what is deliberately out of scope"),
@@ -345,6 +345,9 @@ ui <- navbarPage(
       )
     )
   ),
+
+  # ── Query Design (concept-block methodology) ──
+  tabPanel("Query Design", qd_render()),
 
   # ── 5. KIT 1 ──────────────────────────────────────────────
   tabPanel("KIT 1",

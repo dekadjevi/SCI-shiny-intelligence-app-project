@@ -5,7 +5,7 @@ library(igraph)
 library(tidygraph)
 library(ggraph)
 
-setwd("/Users/kodjoflaurent/SCI-shiny-intelligence-app/data/KIQs_1_1/raw")
+setwd("/Users/flaurent/Desktop/SCI-shiny-intelligence-app-project/data/KIQ_1_1/raw")
 # Load data
 df_new <- read_csv("new_scopus_latest_1.csv", show_col_types = FALSE)
 

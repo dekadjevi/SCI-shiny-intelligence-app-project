@@ -12,7 +12,7 @@ library(ggplot2)
 library(wordcloud)
 library(RColorBrewer)
 
-setwd("/Users/kodjoflaurent/SCI-shiny-intelligence-app/data/KIQs_1_1/raw")
+setwd("/Users/flaurent/Desktop/SCI-shiny-intelligence-app-project/data/KIQ_1_1/raw")
 # Load data
 df_new <- read_csv("new_scopus_latest_1.csv", show_col_types = FALSE)
 
@@ -85,7 +85,8 @@ keywords_clean <- keywords_tokens %>%
     "sales",
     "online shopping",
     "purchasing",
-    "electronic money"
+    "electronic money",
+    "marketplace"
   ))
 
 # Occurrence analysis
@@ -97,11 +98,11 @@ head(occurrence_table, 35)
 
 # Top 15 bar chart
 top15 <- occurrence_table %>%
-  slice_max(n, n = 30) %>%
+  slice_max(n, n = 20) %>%
   arrange(n)
 
 ggplot(top15, aes(x = n, y = reorder(keyword, n))) +
-  geom_col() +
+  geom_col(fill = "#003366") +
   geom_text(aes(label = n), hjust = -0.2, size = 3.5) +
   labs(
     title = "Top 35 Keyword Occurrences Without Scope Terms",
@@ -121,3 +122,4 @@ wordcloud(
   random.order = FALSE,
   colors = brewer.pal(8, "Dark2")
 )
+

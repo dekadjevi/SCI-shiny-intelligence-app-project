@@ -207,13 +207,19 @@ KIT2_KIQ23 <- list(
     decision = "Treat the 16 raw topics as too granular to steer strategy; collapse them into macro-themes (next step) before drawing any conclusion."
   ),
   step2 = list(
-    label = "Step 2 · K-means on BERTopic",
-    blurb = "Following the two-family signal, K-means (k=2) clusters the topics into macro-themes. The distance map recolours by cluster; the macro-term bars show what each cluster is about; the trend tracks academic attention to each over 2018–2026.",
+    label = "Step 2 \u00b7 K-means on BERTopic",
+    blurb = "Following the two-family signal, K-means (k=2) clusters the topics into macro-themes. The distance map recolours by cluster; the macro-term bars show what each cluster is about.",
     imgs  = c(kpath("KIQ_2_3", "inter_topic_after_K_means.png"),
-              kpath("KIQ_2_3", "kiq23_macro_terms_topic_After_Kmeans.png"),
-              kpath("KIQ_2_3", "kiq23_macro_term_trend.png")),
-    insight  = "The literature splits into Experience Economy (835 papers — customer, hospitality, service, digital, experience, personalization, robots) and a much smaller Operational/Transactional cluster (123 papers — food, ordering, price, supply, delivery). Academic attention to the Experience cluster grew ~10× (25→242 papers, 2018→2025) while the Operational cluster stayed essentially flat (~5→28). Customer expectations are migrating decisively from \u2018can I order efficiently\u2019 to \u2018is the whole experience smart, personal and engaging\u2019.",
-    decision = "Anchor METRO's 3–5 yr digital roadmap to the experience layer (personalization, smart/assisted ordering, engagement), not just transactional ordering mechanics — the operational basics are necessary but no longer where expectations are moving. This corroborates the KIT 1 personalization gap from the demand side."
+              kpath("KIQ_2_3", "kiq23_macro_terms_topic_After_Kmeans.png")),
+    insight  = "The literature splits into an Experience Economy cluster (835 papers \u2014 customer, hospitality, service, digital, experience, personalization, robots) and a much smaller Operational / Transactional cluster (123 papers \u2014 food, ordering, price, supply, delivery).",
+    decision = "Read strategy at the macro-theme level, not the 16 raw topics \u2014 the experience cluster is where the volume sits. The next step asks whether it is also where attention is heading."
+  ),
+  step3 = list(
+    label = "Step 3 \u00b7 Attention over time",
+    blurb = "Tracking academic attention to each macro-cluster across 2018\u20132026 \u2014 the temporal signal behind the strategic call.",
+    imgs  = c(kpath("KIQ_2_3", "kiq23_macro_term_trend.png")),
+    insight  = "Academic attention to the Experience cluster grew ~10\u00d7 (25\u2192242 papers, 2018\u21922025) while the Operational cluster stayed essentially flat (~5\u219228). Customer expectations are migrating decisively from \u2018can I order efficiently\u2019 to \u2018is the whole experience smart, personal and engaging\u2019.",
+    decision = "Anchor METRO's 3\u20135 yr digital roadmap to the experience layer (personalization, smart/assisted ordering, engagement), not just transactional ordering mechanics. This corroborates the KIT 1 personalization gap from the demand side."
   )
 )
 
@@ -445,6 +451,74 @@ KIT3_KIQ33_KPIS <- list(
   list("59.5%",        "METRO reviews 1\u20132\u2605"),
   list("~57%",         "Complaints operational")
 )
+
+# \u2500\u2500 Query Design page (concept-block search methodology) \u2500\u2500
+QD_QUERIES <- list(
+  list(kiq="KIQ 1.1", q="Platform functionalities & ordering capabilities",
+       src="SCOPUS", srccol="#C0560C", field="TITLE-ABS-KEY", result="final 16-topic corpus",
+       note="Three concept-blocks intersected \u2014 channel \u00d7 segment \u00d7 ordering features.",
+       blocks=list(c("e-commerce","mobile commerce","online ordering","B2B commerce"),
+                   c("wholesale","HoReCa","marketplace"),
+                   c("reordering","checkout","delivery","shopping cart","order management","mobile ordering","digital catalog"))),
+  list(kiq="KIQ 1.2", q="Evolution of digital ordering (innovation trajectory)",
+       src="Espacenet", srccol="#1C7293", field="nftxt (full text)", result="~250 patents, 2022\u20132026",
+       note="Same logic on patents: a channel block AND a capability block, full-text matched.",
+       blocks=list(c("e-commerce","online ordering","digital marketplace"),
+                   c("product search","recommendation","personalization","shopping cart","checkout","order management","mobile ordering"))),
+  list(kiq="KIQ 1.3", q="Retention mechanisms (satisfaction / loyalty)",
+       src="SCOPUS", srccol="#C0560C", field="TITLE-ABS-KEY", result="714 articles \u2014 refined from ~3,000",
+       note="Recall\u2192precision tuning: widening the second block with synonyms cut ~3,000 hits to a focused 714.",
+       blocks=list(c("e-commerce","online ordering","digital commerce","mobile commerce"),
+                   c("customer retention","loyalty","repeat purchase","repurchase intention","online repurchase intention","convenience","satisfaction","e-customer satisfaction","online customer experience","online customer engagement","customer experience")))
+)
+
+qd_query_body <- function(blocks) {
+  items <- list(); n <- length(blocks)
+  for (i in seq_len(n)) {
+    terms <- blocks[[i]]; tnodes <- list()
+    for (j in seq_along(terms)) {
+      t <- terms[[j]]
+      tnodes[[length(tnodes)+1]] <- if (grepl(" ", t))
+        shiny::tags$span(class="qd-term qd-phrase", paste0("\u201c", t, "\u201d"))
+      else shiny::tags$span(class="qd-term", t)
+      if (j < length(terms)) tnodes[[length(tnodes)+1]] <- shiny::tags$span(class="qd-or", "OR")
+    }
+    items[[length(items)+1]] <- shiny::div(class="qd-block", tnodes)
+    if (i < n) items[[length(items)+1]] <- shiny::tags$span(class="qd-and", "AND")
+  }
+  shiny::div(class="qd-body", items)
+}
+
+qd_render <- function() {
+  cards <- lapply(QD_QUERIES, function(q) {
+    shiny::div(class="qd-card",
+      shiny::div(class="qd-qhead",
+        shiny::div(shiny::tags$span(class="qd-qid", q$kiq), " ", shiny::tags$span(class="qd-qq", q$q)),
+        shiny::tags$span(class="qd-srcbadge", style=paste0("background:", q$srccol), q$src)),
+      shiny::div(class="qd-qmeta",
+        shiny::HTML(paste0("field: <code>", q$field, "</code> &nbsp;\u00b7&nbsp; corpus: <b>", q$result, "</b>"))),
+      qd_query_body(q$blocks),
+      shiny::div(class="qd-qnote", q$note))
+  })
+  shiny::div(class="page-wrap",
+    shiny::div(class="qd-title", "Query Design"),
+    shiny::div(class="qd-sub", "From scope to a query-driven corpus \u2014 how each indicator's SCOPUS & Espacenet search was built"),
+    shiny::div(class="qd-intro",
+      shiny::tags$p(shiny::HTML("Every corpus in this project is <b>query-driven</b>: built from the scope, not hand-picked. Each scope concept becomes a <b>block of synonyms joined by OR</b> (to widen recall); the blocks are combined with <b>AND</b> (each AND-block is a required concept, so the result is their intersection \u2014 raising precision). <b>Terms in quotation marks</b> (e.g. \u201conline ordering\u201d) are matched as <b>exact phrases</b>, while single words (loyalty, navigation) match that token anywhere in the field. Espacenet adds IPC/CPC classes and a publication-date window; corpus size is tuned iteratively.")),
+      shiny::div(class="qd-schema",
+        shiny::tags$span(class="qd-sb", shiny::HTML("<b>Concept A</b><br>syn OR syn OR syn")),
+        shiny::tags$span(class="qd-sand", "AND"),
+        shiny::tags$span(class="qd-sb", shiny::HTML("<b>Concept B</b><br>syn OR syn")),
+        shiny::tags$span(class="qd-sand", "AND"),
+        shiny::tags$span(class="qd-sb", shiny::HTML("<b>Concept C</b><br>syn OR syn")),
+        shiny::tags$span(class="qd-sarrow", "\u2192"),
+        shiny::tags$span(class="qd-scorpus", "query-driven corpus"))),
+    shiny::div(class="qd-illus", "Illustrated with KIT 1's three literature & patent indicators \u2014 the same concept-block method was applied to every SCOPUS / Espacenet corpus across the project."),
+    cards,
+    shiny::div(class="qd-foot",
+      shiny::HTML("<b>Note \u2014</b> the two customer-perception questions (KIQ 1.4 and 3.3) are not Boolean-query corpora: they use the scraped app-store review corpus instead \u2014 a deliberate, disclosed exception where patents and literature structurally cannot answer."))
+  )
+}
 
 # Render a stack of <img> tags for a KIQ (used by server renderUI)
 kit1_image_block <- function(key) {
