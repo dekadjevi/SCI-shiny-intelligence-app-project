@@ -14,7 +14,7 @@ library(ggplot2)
 
 # LOAD DATA
 
-setwd("/Users/kodjoflaurent/SCI-shiny-intelligence-app/data/KIQs_1_1/raw")
+setwd("/Users/flaurent/Desktop/SCI-shiny-intelligence-app-project/data/KIQ_1_1/raw")
 data <- read_csv(
   "new.csv",
   show_col_types = FALSE
