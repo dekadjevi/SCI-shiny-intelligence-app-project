@@ -85,7 +85,3 @@ p_trend <- ggplot(trend_data, aes(x = publication_year, y = filings)) +
 
 p_trend
 
-ggsave(file.path(outputs_dir, "01_trend.png"), p_trend,
-       width = 9, height = 5, dpi = 300, bg = "white")
-
-cat("Script 01 complete. Chart saved to:", file.path(outputs_dir, "01_trend.png"), "\n")
